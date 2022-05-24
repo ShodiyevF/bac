@@ -1,0 +1,6 @@
+client_status
+↓
+1 = heart
+2 = black_document
+3 = star
+4 = circle

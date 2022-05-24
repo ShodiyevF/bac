@@ -1,0 +1,11 @@
+actions
+↓
+clients = 1
+orders = 2
+finance = 3
+statistic = 4
+settings = 5
+
+clients
+↓
+client_status: 1 = heart, 2 = black_document, 3 = star, 4, circle
