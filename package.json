@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server",
-    "start": "pm2 start src/server.js --name 'servicecontrol'",
-    "delete": "pm2 delete 'servicecontrol'"
+    "dev": "nodemon src/server"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +15,6 @@
     "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "nodemailer": "^6.7.3",
-    "pg": "^8.7.3",
-    "pm2": "^5.2.0"
+    "pg": "^8.7.3"
   }
 }

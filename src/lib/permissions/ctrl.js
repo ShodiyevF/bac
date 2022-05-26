@@ -13,8 +13,8 @@ const permissionCtrl = async (company_id, nameId, actionId, user_id) => {
         inner join company as c on c.company_id = pc.company_id
         where c.company_id = $1;
         `
-        
-        const test = await uniqRow(query, company_id + 1 <= companys.rows.length ? company_id + 1 : companys.rows[0].company_id)
+
+        const test = await uniqRow(query, company_id == 0 ? company_id+1: company_id)
         
         const permissionsModel = test.rows
         const permission = permissionsModel.find(el => el.permissions_names_id === nameId && el.action_id === actionId)

@@ -6,9 +6,9 @@ const { clientsGETModel, clientsPOSTModel, clientsStatusPUTModel, clientsMODEL }
 const clientGETCtrl = async (req, res) => {
     try {
         
-        const permission = await permissionCtrl((req.body.company_id) - 1, 1, 1, tokenchecker(req.body.token).id)
+        const permission = await permissionCtrl((req.body.company_id), 1, 1, tokenchecker(req.body.token).id)
     
-        if (await checkcompany(tokenchecker(req.body.token).id, (req.body.company_id - 1))) {
+        if (await checkcompany(tokenchecker(req.body.token).id, (req.body.company_id))) {
             if(permission){
                 const company_id = (req.body.company_id) - 1
                 res.json({

@@ -6,7 +6,7 @@ const { ordersGETModel, ordersPOSTModel, orderOneGETModel, orderUPDATEStatusMode
 const orderGETCtrl = async (req, res) => {
     try {
         if (req.body.token) {
-            const read = permissionCtrl((+req.body.company_id) - 1, 1, 2, tokenchecker(req.body.token).id)
+            const read = permissionCtrl((+req.body.company_id), 1, 2, tokenchecker(req.body.token).id)
             if (await checkcompany(tokenchecker(req.body.token).id, +(req.body.company_id))) {
                 if (await read) {
                     // console.log(await ordersGETModel(+(tokenchecker(req.body.token).id), req.body.company_id ? req.body.company_id - 1 : 0));
