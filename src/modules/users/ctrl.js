@@ -1,5 +1,5 @@
 const { tokenchecker } = require("../../lib/tokenchecker")
-const { companysGETModel } = require("./model")
+const { companysGETModel, companysPOSTModel } = require("./model")
 
 const companysGETCTRL = async (req, res) => {
     try {
@@ -20,10 +20,33 @@ const companysGETCTRL = async (req, res) => {
         }
 
     } catch (error) {
-        
+       console.log(error.message, 'companysGETCTRL'); 
+    }
+}
+
+const companyPOSTCTRL = async (req, res) => {
+    try {
+        if (req.body.token && req.body.company_name ) {
+            const token = await tokenchecker(req.body.token)
+            if (token.id) {
+                await companysPOSTModel(token.id, req.body.company_name)
+                return res.json({
+                    status: 200,
+                    message: 'companys has writed'
+                })
+            } else {
+                return req.json({
+                    status: 400,
+                    message: `you do'nt have token`
+                })
+            }
+        }
+    } catch (error) {
+        console.log(error.message, 'companyPOSTCTRL'); 
     }
 }
 
 module.exports = {
-    companysGETCTRL
+    companysGETCTRL,
+    companyPOSTCTRL
 }

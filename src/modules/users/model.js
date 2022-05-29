@@ -9,6 +9,15 @@ const companysGETModel = async (user_id) => {
     }
 }
 
+const companysPOSTModel = async (user_id, company_name) => {
+    try {
+        await uniqRow(`insert into company(company_fullname, user_id) values ($1,$2)`, company_name, user_id)
+    } catch (error) {
+        console.log(error.message, 'companysPOSTModel');
+    }
+}
+
 module.exports = {
-    companysGETModel
+    companysGETModel,
+    companysPOSTModel
 }

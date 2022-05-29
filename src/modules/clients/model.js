@@ -12,9 +12,11 @@ const clientsGETModel = async (user_id, company_id) => {
         order by cl.client_id desc;
         `
         
-        const companys = await (await uniqRow('select * from company where user_id = $1', user_id)).rows
-        
-        const clients = await (await uniqRow(query, user_id, companys[company_id].company_id)).rows
+        const companys = (await uniqRow('select * from company where user_id = $1', user_id)).rows
+
+        const findedCompany = companys.find(el => el.company_id === +company_id)
+
+        const clients = await (await uniqRow(query, user_id, findedCompany.company_id)).rows
         
         return clients
         
@@ -30,8 +32,10 @@ const clientsPOSTModel = async ({fullname, phone_number_first, phone_number_seco
         insert into clients (client_fullname, client_phone_number_first, client_phone_number_second, client_about, client_address, client_age, company_id) values ($1,$2,$3,$4,$5,$6,$7)`
         
         const companys = await (await uniqRow('select * from company where user_id = $1', user_id)).rows
+
+        const company_ida = companys.find(el => el.company_id === +company_id)
         
-        await (await uniqRow(query, fullname, phone_number_first, phone_number_second, about, address, age, companys[company_id].company_id)).rows
+        await (await uniqRow(query, fullname, phone_number_first, phone_number_second, about, address, age, company_ida.company_id)).rows
         
     } catch (error) {
         console.log(error.message)

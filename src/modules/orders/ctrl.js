@@ -8,19 +8,19 @@ const orderGETCtrl = async (req, res) => {
         if (req.body.token) {
             const read = permissionCtrl((+req.body.company_id), 1, 2, tokenchecker(req.body.token).id)
             if (await checkcompany(tokenchecker(req.body.token).id, +(req.body.company_id))) {
-                if (await read) {
+                // if (await read) {
                     // console.log(await ordersGETModel(+(tokenchecker(req.body.token).id), req.body.company_id ? req.body.company_id - 1 : 0));
                     return res.json({
                         status: 200,
                         message: 'data has sended',
                         data: (await ordersGETModel(+(tokenchecker(req.body.token).id), +(req.body.company_id) ? +(req.body.company_id) : 0)).rows
                     })
-                } else {
-                    return res.json({
-                        status: 400,
-                        message: 'you dont have any permissions'
-                    })
-                }
+                // } else {
+                    // return res.json({
+                        // status: 400,
+                        // message: 'you dont have any permissions'
+                    // })
+                // }
             } else {
                 return res.json({
                     status: 404,
@@ -42,7 +42,7 @@ const orderPOSTCtrl = async (req, res) => {
     try { 
         if (req.body.token) {
             const write = permissionCtrl((req.body.company_id) - 1, 2, 2, tokenchecker(req.body.token).id)
-            if (await write) {
+            // if (await write) {
                 const writeData = await ordersPOSTModel(req.body, req.body.client_id, req.body.company_id)
                 if (writeData) {
                     return res.json({
@@ -55,12 +55,12 @@ const orderPOSTCtrl = async (req, res) => {
                         message: 'data has not writed, client not found in this company',
                     })
                 }
-            } else {
-                return res.json({
-                    status: 400,
-                    message: 'you dont have any permissions'
-                })
-            }
+            // } else {
+                // return res.json({
+                    // status: 400,
+                    // message: 'you dont have any permissions'
+                // })
+            // }
         } else {
             return res.json({
                 status: 404,
@@ -76,18 +76,18 @@ const orderOneGETCtrl = async (req, res) => {
     try {
         if (req.body.token) {
             const write = permissionCtrl((req.body.company_id) - 1, 1, 2, tokenchecker(req.body.token).id)
-            if (await write) {
+            // if (await write) {
                 return res.json({
                     status: 200,
                     message: 'data has sended',
                     data: await (await orderOneGETModel(req.body.client_id, req.body.company_id)).rows
                 })
-            } else {
-                return res.json({
-                    status: 404,
-                    message: 'you dont have any permissions'
-                })
-            }
+            // } else {
+            //     return res.json({
+            //         status: 404,
+            //         message: 'you dont have any permissions'
+            //     })
+            // }
         } else {
             return res.json({
                 status: 404,
@@ -104,7 +104,7 @@ const orderUPDATEStatusCtrl = async (req, res) => {
         if(req.body.token){
             const update = permissionCtrl((req.body.company_id) - 1, 4, 2, tokenchecker(req.body.token).id)
 
-            if (await update) {
+            // if (await update) { 
                 if (req.body.status && typeof req.body.status === 'number' && req.body.status <= 8 && req.body.company_id && typeof req.body.company_id === 'number' && req.body.order_id && typeof req.body.order_id === 'number') {
                     const updateSTATUS = await orderUPDATEStatusModel(req.body)
                         return res.json({
@@ -117,12 +117,12 @@ const orderUPDATEStatusCtrl = async (req, res) => {
                         message: 'data has not updated, keys not have or keys wrong'
                     })
                 }
-            } else {
-                return res.json({
-                    status: 404,
-                    message: 'you dont have any permissions'
-                })
-            }
+            // } else {
+            //     return res.json({
+            //         status: 404,
+            //         message: 'you dont have any permissions'
+            //     })
+            // }
             
         } else {
             return res.json({

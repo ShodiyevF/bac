@@ -5,7 +5,8 @@ const ordersGETModel = async (user_id, company_id) => {
         
         const companys = await uniqRow('select * from company where user_id = $1', user_id)
         const row = +company_id
-        const mycompany = companys.rows[row > companys.rows.length ? 0 : row === 0 ? 0 : row - 1].company_id
+        const birniam = companys.rows.find(el => el.company_id === row)
+        const mycompany = companys.rows[row > companys.rows.length ? 0 : row === 0 ? 0 : row - 1]
         const query = `
         select
         *
@@ -14,7 +15,8 @@ const ordersGETModel = async (user_id, company_id) => {
         where o.company_id = $1
         order by order_id desc
         `
-        const orders = await uniqRow(query, mycompany)
+        console.log(birniam);
+        const orders = await uniqRow(query, birniam.company_id)
         return orders
         
     } catch (error) {

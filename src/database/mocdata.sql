@@ -4,8 +4,9 @@ insert into users (user_fullname, user_login, user_password) values
 ('adhamov temurbek', '998919999999', 1234);
 
 insert into company(company_fullname, user_id) values 
+('osmondagi bolalar', 3),
+('universe y', 1),
 ('talim', 3);
-('universe y', 1);
 
 insert into permissions_names(permissions_name) values 
 ('read'),
@@ -22,10 +23,12 @@ insert into permissions_access(permissions_names_id, company_id, action_id) valu
 (4,1,2);
 
 insert into permissions_access(permissions_names_id, company_id, action_id) values (1,1,1);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (1,3,2);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (1,1,2);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (4,1,2);
 insert into permissions_access(permissions_names_id, company_id, action_id) values (2,1,1);
+insert into permissions_access(permissions_names_id, company_id, action_id) values (3,1,1);
+insert into permissions_access(permissions_names_id, company_id, action_id) values (4,1,1);
+insert into permissions_access(permissions_names_id, company_id, action_id) values (1,1,2);
+insert into permissions_access(permissions_names_id, company_id, action_id) values (2,1,2);
+insert into permissions_access(permissions_names_id, company_id, action_id) values (3,1,2);
 insert into permissions_access(permissions_names_id, company_id, action_id) values (4,1,2);
 
 insert into clients(client_status, client_fullname, client_phone_number_first, client_phone_number_second, client_about, client_address, client_age, company_id) values 
