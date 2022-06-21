@@ -18,7 +18,22 @@ const searchModel = async (key, token, company_id) => {
             `
             results  = await uniqRow(query, birniam.company_id, key.split('#')[1])
         } else if (key.toString()[0] === '@') {
-            results = await uniqRow(`select * from clients where client_id = $1`, key.split('@')[1])
+            const query = `
+            select
+            *
+            from clients as cl
+            inner join company as c on c.company_id = cl.company_id
+            where c.user_id = $1 and c.company_id = $2 and cl.client_id = $3
+            `
+            
+            const companys = (await uniqRow('select * from company where user_id = $1', token.id)).rows
+            
+            const findedCompany = companys.find(el => el.company_id === +company_id)
+            
+            results = await uniqRow(query, token.id, findedCompany.company_id, key.split('@')[1])
+            
+            // results = await uniqRow(`select * from clients where client_id = $1`, key.split('@')[1])
+            
         } else {    
             return 400
         }

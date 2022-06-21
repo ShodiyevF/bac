@@ -16,7 +16,6 @@ const searchCtrl = async (req, res) => {
                             message: 'error on keys'
                         })
                     } else {
-                        console.log(model.rows);
                         if (model.rows.length) {
                             if ((model.rows)[0].order_id) {
                                 return res.json({
