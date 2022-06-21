@@ -18,14 +18,14 @@ const users = require('./modules/clients/index');
 const orders = require('./modules/orders/index');
 const checktoken = require('./lib/chechtokenapi');
 const companys = require('./modules/users/index');
-const search = require('./modules/search/index');
+// const search = require('./modules/search/index');
 
 app.use(auth)
 app.use(users)
 app.use(orders)
 app.use(checktoken)
 app.use(companys)
-app.use(search)
+// app.use(search)
 
 
 app.listen(4100, console.log('server running on 4000 port'))
