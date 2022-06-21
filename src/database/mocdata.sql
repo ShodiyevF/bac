@@ -39,10 +39,10 @@ insert into clients(client_status, client_fullname, client_phone_number_first, c
 (4, 'shodiyev abdulhakim', '998905073993', '998905063993', 'fgaadsfdsdsfasfdsffcc', 'bradsfdvd', 30, 1),
 (2, 'gulomov abdulatif', '998918504842', '998991457151', 'fgskgfjladnkf;ldfoipdfjkdlm', 'bradsfdvd', 30, 1);
 
-insert into orders(order_device_name, order_device_bug, order_price, client_id, company_id) values 
-('galaxy S99', 'glezdo', '310.500', 1, 1),
-('galaxy A15', 'microfon', '310.500', 2, 2),
-('galaxy S99', 'glezdo', '310.500', 3, 1);
+insert into orders(order_device_type, order_device_name, order_device_bug, order_price, order_about, client_id, company_id) values 
+('telefon','galaxy S99', 'glezdo', '310.500', 'asdafsgasdas', 1, 4),
+('telefon','galaxy A15', 'microfon', '310.500', 'asdafsgasdas', 2, 4),
+('telefon','galaxy S99', 'glezdo', '310.500', 'asdafsgasdas', 3, 4);
 
-insert into orders(order_device_name, order_device_bug, order_price, client_id, company_id, order_over_time) values 
-('galaxy S99', 'glezdo', '310.500', 1, 3, '20.06.2022|12:00');
+-- insert into orders(order_device_name, order_device_bug, order_price, client_id, company_id, order_over_time) values 
+-- ('telefon','galaxy S99', 'glezdo', '310.500', 1, 3, '20.06.2022|12:00');

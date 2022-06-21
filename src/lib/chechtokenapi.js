@@ -27,7 +27,7 @@ express.post('/checktoken', async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
     }
 })
 

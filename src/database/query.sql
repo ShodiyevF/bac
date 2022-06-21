@@ -38,3 +38,9 @@ select
 
 
 delete from clients where client_id = 9;
+
+
+
+select
+*
+from clients, orders;

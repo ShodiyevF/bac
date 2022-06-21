@@ -15,7 +15,6 @@ const ordersGETModel = async (user_id, company_id) => {
         where o.company_id = $1
         order by order_id desc
         `
-        console.log(birniam);
         const orders = await uniqRow(query, birniam.company_id)
         return orders
         
