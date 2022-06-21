@@ -27,5 +27,9 @@ app.use(checktoken)
 app.use(companys)
 // app.use(search)
 
+app.get('/', (req, res) => {
+    res.send('home')
+})
+
 
 app.listen(4100, console.log('server running on 4000 port'))
