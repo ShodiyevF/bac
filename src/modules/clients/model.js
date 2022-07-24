@@ -38,7 +38,7 @@ const clientsPOSTModel = async ({fullname, phone_number_first, phone_number_seco
         await (await uniqRow(query, fullname, phone_number_first, phone_number_second, about, address, age, company_ida.company_id)).rows
         
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message, 'clientsPOSTModel')
     }
 }
 
@@ -49,7 +49,15 @@ const clientsStatusPUTModel = async ({client_status, client_id}) => {
         
         await uniqRow(query, client_status, client_id)
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message, 'clientsStatusPUTModel')
+    }
+}
+
+const clientsDELETEModel = async ({company_id, user_id, client_id}) => {
+    try {
+        
+    } catch (error) {
+        console.log(error.message, 'clientsDELETEModel')
     }
 }
 
