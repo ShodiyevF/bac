@@ -53,20 +53,27 @@ const clientsStatusPUTModel = async ({client_status, client_id}) => {
     }
 }
 
-const clientsDELETEModel = async ({company_id, user_id, client_id}) => {
+const clientDELETEModel = async(user_id, {company_id, client_id}) => {
     try {
 
-        const checkuser = await uniqRow('select * from company where user_id = $1', user_id)
+        const checkuser = await uniqRow('select * from company where user_id = $1 and company_id = $2', user_id.id, company_id)
+
         
         if (checkuser.rows.length) {
-            await uniqRow('delete from clients where company_id = $1 and client_id = $2')
-            return 200
+            const checkcompany = await uniqRow('select * from clients where company_id = $1 and client_id = $2', company_id, client_id)
+            if (checkcompany.rows.length) {
+                await uniqRow('delete from orders where client_id = $1', client_id)
+                await uniqRow('delete from clients where company_id = $1 and client_id = $2', company_id, client_id)
+                return 200
+            } else {
+                return 404
+            }
         } else {
-            return 404
+            return 400
         }
         
     } catch (error) {
-        console.log(error.message, 'clientsDELETEModel')
+        console.log(error.message, 'clientDELETEModel')
     }
 }
 
@@ -89,6 +96,6 @@ module.exports = {
     clientsGETModel,
     clientsPOSTModel,
     clientsStatusPUTModel,
-    clientsDELETEModel,
+    clientDELETEModel,
     clientsMODEL
 }

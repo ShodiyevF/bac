@@ -24,7 +24,8 @@ drop table if exists company cascade;
 create table company(
     company_id int generated always as identity primary key,
     company_fullname varchar(56) not null,
-    user_id int not null references users(user_id)
+    user_id int not null references users(user_id),
+    company_owner int references users(user_id)
 );
 
 drop table if exists clients cascade;

@@ -1,7 +1,7 @@
 const {checkcompany} = require("../../lib/checkcompany");
 const { permissionCtrl } = require("../../lib/permissions/ctrl");
 const { tokenchecker } = require('../../lib/tokenchecker');
-const { clientsGETModel, clientsPOSTModel, clientsStatusPUTModel, clientsMODEL } = require("./model")
+const { clientsGETModel, clientsPOSTModel, clientsStatusPUTModel, clientsMODEL,  clientDELETEModel } = require("./model")
 
 const clientGETCtrl = async (req, res) => {
     try {
@@ -30,7 +30,7 @@ const clientGETCtrl = async (req, res) => {
         }
         
     } catch (error) {
-        console.log(error);
+        console.log(error.message, 'clientGETCtrl');
     }
 }
 
@@ -53,7 +53,7 @@ const clientPOSTCtrl = async (req, res) => {
         // }
         
     } catch (error) {
-        console.log(error);
+        console.log(error.message, 'clientPOSTCtrl');
     }
 }
 
@@ -75,7 +75,33 @@ const clientStatusPUTCtrl = async (req, res) => {
         // }
         
     } catch (error) {
-        console.log(error);
+        console.log(error.message, 'clientStatusPUTCtrl');
+    }
+}
+
+const clientDELETECtrl = async (req, res) => {
+    try {
+
+        const clientDELETE = await clientDELETEModel(await tokenchecker(req.body.token), req.body)
+        if (clientDELETE === 200) {
+            res.json({
+                status: 200,
+                message: 'user has deleted',
+            })
+        } else if(clientDELETE === 400) {
+            res.json({
+                status: 404,
+                message: 'company not found',
+            })
+        } else {
+            res.json({
+                status: 404,
+                message: 'user not found',
+            })
+        }
+
+    } catch (error) {
+        console.log(error.message, 'clientDELETECtrl');
     }
 }
 
@@ -94,5 +120,6 @@ module.exports = {
     clientGETCtrl,
     clientPOSTCtrl,
     clientStatusPUTCtrl,
+    clientDELETECtrl,
     clientCTRL
 }
