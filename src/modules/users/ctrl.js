@@ -113,5 +113,6 @@ const companyWorkersGETCTRL = async (req, res) => {
 module.exports = {
     companysGETCTRL,
     companyPOSTCTRL,
-    companyOwnerGETCtrl
+    companyOwnerGETCtrl,
+    companyWorkersGETCTRL
 }
