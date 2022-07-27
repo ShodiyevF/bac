@@ -94,12 +94,13 @@ const companysWorkersGETModel = async (user_id) => {
 
 
     } catch (error) {
-        console.log(error.message, 'companysPOSTModel');
+        console.log(error.message, 'companysWorkersGETModel');
     }
 }
 
 module.exports = {
     companysGETModel,
     companysPOSTModel,
-    companyOwnerGETModel
+    companyOwnerGETModel,
+    companysWorkersGETModel
 }
