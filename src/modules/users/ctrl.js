@@ -1,5 +1,5 @@
 const { tokenchecker } = require("../../lib/tokenchecker")
-const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel } = require("./model")
+const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel, companysWorkersPermissionGETModel } = require("./model")
 
 const companysGETCTRL = async (req, res) => {
     try {
@@ -84,22 +84,30 @@ const companyWorkersGETCTRL = async (req, res) => {
     try {
         if (req.body.token) {
             const token = await tokenchecker(req.body.token)
-            if (token.id) {
-                const check = await companysWorkersGETModel(token.id)
-                if (check === 400) {
-                    return res.json({
-                        status: 400,
-                        message: 'you are not owner'
-                    })
+            console.log(token);
+            if (token) {
+                if (token.id) {
+                    const check = await companysWorkersGETModel(token.id)
+                    if (check === 400) {
+                        return res.json({
+                            status: 400,
+                            message: 'you are not owner'
+                        })
+                    } else {
+                        return res.json({
+                            status: 200,
+                            message: 'workers sended',
+                            data: check.rows
+                        })
+                    }
                 } else {
                     return res.json({
-                        status: 200,
-                        message: 'workers sended',
-                        data: check.rows
+                        status: 400,
+                        message: `you do'nt have token`
                     })
                 }
             } else {
-                return req.json({
+                return res.json({
                     status: 400,
                     message: `you do'nt have token`
                 })
@@ -115,7 +123,7 @@ const companysWorkersPermissionGETCTRL = async (req, res) => {
         if (req.body.token) {
             const token = await tokenchecker(req.body.token)
             if (token.id) {
-                const check = await companysWorkersPermissionGETCTRL(token.id, req.body.user_id)
+                const check = await companysWorkersPermissionGETModel(token.id, req.body.user_id)
                 if (check === 400) {
                     return res.json({
                         status: 400,
