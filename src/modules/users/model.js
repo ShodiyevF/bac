@@ -98,9 +98,36 @@ const companysWorkersGETModel = async (user_id) => {
     }
 }
 
+const companysWorkersPermissionGETModel = async (user_id) => {
+    try {
+
+        const query2 = `
+        select
+        *
+        from users as u
+        inner join permissions_access as ca on ca.user_id = u.user_id
+        inner join company as c on c.company_id = u.company_id
+        where u.company_owner = $1;
+        `
+
+        const company = await uniqRow(query2, user_id)
+
+        if (company.rows.length) {
+            return company
+        } else {
+            return 400
+        }
+
+
+    } catch (error) {
+        console.log(error.message, 'companysWorkersGETModel');
+    }
+}
+
 module.exports = {
     companysGETModel,
     companysPOSTModel,
     companyOwnerGETModel,
-    companysWorkersGETModel
+    companysWorkersGETModel,
+    companysWorkersPermissionGETModel
 }

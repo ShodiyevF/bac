@@ -1,5 +1,5 @@
 const { tokenchecker } = require("../../lib/tokenchecker")
-const { companysGETModel, companysPOSTModel, companyOwnerGETModel } = require("./model")
+const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel } = require("./model")
 
 const companysGETCTRL = async (req, res) => {
     try {
@@ -95,7 +95,7 @@ const companyWorkersGETCTRL = async (req, res) => {
                     return res.json({
                         status: 200,
                         message: 'companys has writed',
-                        data: check
+                        data: check.rows
                     })
                 }
             } else {
@@ -106,7 +106,7 @@ const companyWorkersGETCTRL = async (req, res) => {
             }
         }
     } catch (error) {
-        console.log(error.message, 'companyPOSTCTRL');
+        console.log(error.message, 'companyWorkersGETCTRL');
     }
 }
 

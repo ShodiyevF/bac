@@ -63,14 +63,6 @@ drop table if exists permissions_access cascade;
 create table permissions_access(
     permissions_access_id int generated always as identity primary key,
     permissions_names_id int not null references permissions_names(permissions_names_id),
-    company_id int not null references company(company_id),
-    action_id int not null references actions(action_id)
-);
-
-drop table if exists permissions_access cascade;
-create table permissions_access(
-    permissions_access_id int generated always as identity primary key,
-    permissions_names_id int not null references permissions_names(permissions_names_id),
-    company_id int not null references company(company_id),
+    user_id int not null references users(user_id),
     action_id int not null references actions(action_id)
 );

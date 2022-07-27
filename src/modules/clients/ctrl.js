@@ -6,22 +6,23 @@ const { clientsGETModel, clientsPOSTModel, clientsStatusPUTModel, clientsMODEL, 
 const clientGETCtrl = async (req, res) => {
     try {
         
-        const permission = await permissionCtrl((req.body.company_id), 1, 1, tokenchecker(req.body.token).id)
-    
+        const permission = await permissionCtrl(tokenchecker(req.body.token).id, 1, 1)
+        
+        console.log(tokenchecker(req.body.token).id);
         if (await checkcompany(tokenchecker(req.body.token).id, (req.body.company_id))) {
-            // if(permission){
+            if(permission){
                 const company_id = (req.body.company_id)
                 res.json({
                     status: 200,
                     message: 'data has sended',
                     data: await clientsGETModel(tokenchecker(req.body.token).id, company_id ? company_id : 0)
                 }) 
-            // } else {
-            //     res.json({
-            //         status: 404,
-            //         message: `you do'nt have any permissions`
-            //     })
-            // }
+            } else {
+                res.json({
+                    status: 404,
+                    message: `you do'nt have any permissions`
+                })
+            }
         } else {
             res.json({
                 status: 404,
@@ -36,21 +37,21 @@ const clientGETCtrl = async (req, res) => {
 
 const clientPOSTCtrl = async (req, res) => {
     try {
-        const permission = await permissionCtrl((req.body.company_id) - 1, 2, 1, tokenchecker(req.body.token).id)
+        const permission = await permissionCtrl(tokenchecker(req.body.token).id, 2, 1)
         
-        // if(permission){
+        if(permission){
             const company_id = (req.body.company_id)
             res.json({
                 status: 200,
                 message: 'data has sended',
                 data: await clientsPOSTModel(req.body, tokenchecker(req.body.token).id, company_id ? company_id : 0)
             })
-        // } else {
-        //     res.json({ 
-        //         status: 404,
-        //         message: `you do'nt have any permissions`
-        //     })
-        // }
+        } else {
+            res.json({ 
+                status: 404,
+                message: `you do'nt have any permissions`
+            })
+        }
         
     } catch (error) {
         console.log(error.message, 'clientPOSTCtrl');
@@ -59,20 +60,21 @@ const clientPOSTCtrl = async (req, res) => {
 
 const clientStatusPUTCtrl = async (req, res) => {
     try {
-        const permission = await permissionCtrl(req.body.company_id, 4, 1, tokenchecker(req.body.token).id)
-        // if(permission){
+        const permission = await permissionCtrl(tokenchecker(req.body.token).id, 4, 1)
+        
+        if(permission){
             const company_id = (req.body.company_id)-1
             res.json({
                 status: 200,
                 message: 'data has sended',
                 data: await clientsStatusPUTModel(req.body)
             })
-        // } else {
-        //     res.json({
-        //         status: 404,
-        //         message: `you do'nt have any permissions`
-        //     })
-        // }
+        } else {
+            res.json({
+                status: 404,
+                message: `you do'nt have any permissions`
+            })
+        }
         
     } catch (error) {
         console.log(error.message, 'clientStatusPUTCtrl');
@@ -81,25 +83,34 @@ const clientStatusPUTCtrl = async (req, res) => {
 
 const clientDELETECtrl = async (req, res) => {
     try {
-
+        const permission = await permissionCtrl(tokenchecker(req.body.token).id, 3, 1)
+        
         const clientDELETE = await clientDELETEModel(await tokenchecker(req.body.token), req.body)
-        if (clientDELETE === 200) {
-            res.json({
-                status: 200,
-                message: 'user has deleted',
-            })
-        } else if(clientDELETE === 400) {
-            res.json({
-                status: 404,
-                message: 'company not found',
-            })
+        
+        if(permission){
+            if (clientDELETE === 200) {
+                res.json({
+                    status: 200,
+                    message: 'user has deleted',
+                })
+            } else if(clientDELETE === 400) {
+                res.json({
+                    status: 404,
+                    message: 'company not found',
+                })
+            } else {
+                res.json({
+                    status: 404,
+                    message: 'user not found',
+                })
+            }
         } else {
             res.json({
-                status: 404,
-                message: 'user not found',
+                status: 500,
+                message: `you do'nt have any permissions`
             })
         }
-
+        
     } catch (error) {
         console.log(error.message, 'clientDELETECtrl');
     }

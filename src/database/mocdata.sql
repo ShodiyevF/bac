@@ -1,7 +1,7 @@
-insert into users (user_fullname, user_login, user_password) values 
-('Xayrulloh Jurayev', 'test', 1234),
+insert into users (user_fullname, user_login, user_password, company_id) values 
+('adhamov temurbek', '123t', 1234, 4);
+('Xayrulloh Jurayev', 'test', 1234);
 ('sodirxon mahmudov', '1234', 1234),
-('adhamov temurbek', '998919999999', 1234);
 
 insert into company(company_fullname, company_owner) values 
 ('osmondagi bolalar', 3),
@@ -23,14 +23,14 @@ insert into permissions_access(permissions_names_id, company_id, action_id) valu
 (2,1,1),
 (4,1,2);
 
-insert into permissions_access(permissions_names_id, company_id, action_id) values (1,4,1);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (2,1,1);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (3,1,1);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (4,1,1);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (1,1,2);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (2,1,2);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (3,1,2);
-insert into permissions_access(permissions_names_id, company_id, action_id) values (4,1,2);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (1,2,1);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (2,1,1);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (3,1,1);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (4,1,1);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (1,1,2);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (2,1,2);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (3,1,2);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (4,1,2);
 
 insert into clients(client_status, client_fullname, client_phone_number_first, client_phone_number_second, client_about, client_address, client_age, company_id) values 
 (1, 'shodiyev fayzulloh', '998912007435', '998993646891', 'birnima13', 'bradsfdvd', 30, 1),
