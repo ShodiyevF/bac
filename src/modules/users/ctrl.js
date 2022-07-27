@@ -80,6 +80,36 @@ const companyPOSTCTRL = async (req, res) => {
     }
 }
 
+const companyWorkersGETCTRL = async (req, res) => {
+    try {
+        if (req.body.token) {
+            const token = await tokenchecker(req.body.token)
+            if (token.id) {
+                const check = await companysWorkersGETModel(token.id)
+                if (check === 400) {
+                    return res.json({
+                        status: 400,
+                        message: 'you are not owner'
+                    })
+                } else {
+                    return res.json({
+                        status: 200,
+                        message: 'companys has writed',
+                        data: check
+                    })
+                }
+            } else {
+                return req.json({
+                    status: 400,
+                    message: `you do'nt have token`
+                })
+            }
+        }
+    } catch (error) {
+        console.log(error.message, 'companyPOSTCTRL');
+    }
+}
+
 module.exports = {
     companysGETCTRL,
     companyPOSTCTRL,
