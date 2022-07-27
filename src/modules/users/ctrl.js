@@ -94,7 +94,37 @@ const companyWorkersGETCTRL = async (req, res) => {
                 } else {
                     return res.json({
                         status: 200,
-                        message: 'companys has writed',
+                        message: 'workers sended',
+                        data: check.rows
+                    })
+                }
+            } else {
+                return req.json({
+                    status: 400,
+                    message: `you do'nt have token`
+                })
+            }
+        }
+    } catch (error) {
+        console.log(error.message, 'companyWorkersGETCTRL');
+    }
+}
+
+const companysWorkersPermissionGETCTRL = async (req, res) => {
+    try {
+        if (req.body.token) {
+            const token = await tokenchecker(req.body.token)
+            if (token.id) {
+                const check = await companysWorkersPermissionGETCTRL(token.id, req.body.user_id)
+                if (check === 400) {
+                    return res.json({
+                        status: 400,
+                        message: 'you are not owner'
+                    })
+                } else {
+                    return res.json({
+                        status: 200,
+                        message: 'permissions access sended',
                         data: check.rows
                     })
                 }
@@ -114,5 +144,6 @@ module.exports = {
     companysGETCTRL,
     companyPOSTCTRL,
     companyOwnerGETCtrl,
-    companyWorkersGETCTRL
+    companyWorkersGETCTRL,
+    companysWorkersPermissionGETCTRL
 }
