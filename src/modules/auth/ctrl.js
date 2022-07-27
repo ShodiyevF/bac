@@ -27,7 +27,7 @@ const loginCtrl = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error);
+        console.log(error.message, 'loginCtrl');
     }
 }
 
@@ -50,7 +50,7 @@ const registerCtrl = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error.message);
+        console.log(error.message, 'registerCtrl');
     }
 }
 
@@ -75,7 +75,7 @@ const recoverPassCTRL = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error);
+        console.log(error.message, 'recoverPassCTRL');
     }
 }
 

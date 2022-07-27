@@ -4,7 +4,7 @@ const { tokenchecker } = require("../tokenchecker")
 const permissionCtrl = async (company_id, nameId, actionId, user_id) => {
     
     try {
-        const companys = await uniqRow('select * from company where user_id = $1', user_id)
+        // const companys = await uniqRow('select * from users where company_id = $1 and user_id = $2', company_id, user_id)
         
         const query = `
         select

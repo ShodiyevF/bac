@@ -5,16 +5,18 @@ const searchModel = async (key, token, company_id) => {
         let results
         
         if (key.toString()[0] === '#'){
-            const companys = await uniqRow('select * from company where user_id = $1', token.id)
+            const companys = await uniqRow('select * from users where user_id = $1 and company_id = $2', token.id, company_id)
             const row = +company_id
             const birniam = companys.rows.find(el => el.company_id === row)
             const mycompany = companys.rows[row > companys.rows.length ? 0 : row === 0 ? 0 : row - 1]
+            // console.log(mycompany);
             const query = `
             select
             *
             from orders as o
-            inner join clients as c on c.client_id = o.client_id
-            where o.company_id = $1 and o.order_id = $2
+            inner join company as c on c.company_id = o.company_id
+            inner join clients as cc on cc.company_id = c.company_id
+            where o.company_id = $1 and o.order_id = $2;
             `
             results  = await uniqRow(query, birniam.company_id, key.split('#')[1])
         } else if (key.toString()[0] === '@') {
@@ -22,11 +24,11 @@ const searchModel = async (key, token, company_id) => {
             select
             *
             from clients as cl
-            inner join company as c on c.company_id = cl.company_id
-            where c.user_id = $1 and c.company_id = $2 and cl.client_id = $3
+            inner join users as u on u.company_id = cl.company_id
+            where u.user_id = $1 and u.company_id = $2 and cl.client_id = $3
             `
             
-            const companys = (await uniqRow('select * from company where user_id = $1', token.id)).rows
+            const companys = (await uniqRow('select * from users where user_id = $1 and company_id = $2', token.id, company_id)).rows
             
             const findedCompany = companys.find(el => el.company_id === +company_id)
             

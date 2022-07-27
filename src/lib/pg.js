@@ -16,7 +16,7 @@ const uniqRow = async (queryy, ...arr) => {
         client.release()
         return query
     } catch (err){
-        console.log(err);
+        console.log(err.message, 'uniqROW');
     }
 }
 

@@ -12,20 +12,20 @@ create table actions(
     action_name varchar(56) not null
 );
 
+drop table if exists company cascade;
+create table company(
+    company_id int generated always as identity primary key,
+    company_fullname varchar(56) not null,
+    company_owner int references users(user_id)
+);
+
 drop table if exists users cascade;
 create table users(
     user_id int generated always as identity primary key,
     user_fullname varchar(56) not null,
     user_login text not null unique,
-    user_password int not null
-);
-
-drop table if exists company cascade;
-create table company(
-    company_id int generated always as identity primary key,
-    company_fullname varchar(56) not null,
-    user_id int not null references users(user_id),
-    company_owner int references users(user_id)
+    user_password int not null,
+    company_id int references company(company_id)
 );
 
 drop table if exists clients cascade;
@@ -39,6 +39,8 @@ create table clients(
     client_about text not null,
     client_address text not null,
     client_age smallint not null,
+    client_delete smallint not null default 0,
+    client_deleter int references users(user_id),
     company_id int not null references company(company_id)
 );
 
