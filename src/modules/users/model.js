@@ -73,7 +73,7 @@ const companysPOSTModel = async (user_id, company_name) => {
     }
 }
 
-const companysPOSTModel = async (user_id, company_name) => {
+const companysWorkersGETModel = async (user_id) => {
     try {
 
         const query2 = `
@@ -81,14 +81,13 @@ const companysPOSTModel = async (user_id, company_name) => {
         *
         from users as u
         inner join company as c on c.company_id = u.company_id
-        where u.user_id = $1 and c.company_owner = u.user_id;
+        where c.company_owner = $1
         `
 
         const company = await uniqRow(query2, user_id)
 
         if (company.rows.length) {
-            await uniqRow(`insert into company(company_fullname, company_owner) values ($1, $2)`, company_name, user_id)
-            return 200
+            return company
         } else {
             return 400
         }
