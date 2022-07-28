@@ -34,7 +34,7 @@ const orderGETCtrl = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error.message, 'order get');
+        console.log(error.message, 'orderGETCtrl');
     }
 }
 
@@ -68,7 +68,7 @@ const orderPOSTCtrl = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error.message, 'ORDER POST');
+        console.log(error.message, 'orderPOSTCtrl');
     }
 }
 
@@ -76,7 +76,7 @@ const orderOneGETCtrl = async (req, res) => {
     try {
         if (req.body.token) {
             const read = permissionCtrl(tokenchecker(req.body.token).id, 1, 2)
-            if (await write) {
+            if (await read  ) {
                 return res.json({
                     status: 200,
                     message: 'data has sended',
@@ -95,7 +95,7 @@ const orderOneGETCtrl = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error.message, 'order one get')
+        console.log(error.message, 'orderOneGETCtrl')
     }
 }
 
@@ -103,6 +103,7 @@ const orderUPDATEStatusCtrl = async (req, res) => {
     try {
         if(req.body.token){
             const update = permissionCtrl(tokenchecker(req.body.token), 4, 2)
+            console.log(update);
             
             if (await update) { 
                 if (req.body.status && typeof req.body.status === 'number' && req.body.status <= 8 && req.body.company_id && typeof req.body.company_id === 'number' && req.body.order_id && typeof req.body.order_id === 'number') {
@@ -131,9 +132,11 @@ const orderUPDATEStatusCtrl = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error.message, 'ORDER UPDATE STATUS CTRL')
+        console.log(error.message, 'orderUPDATEStatusCtrl')
     }
 }
+
+
 
 module.exports = {
     orderGETCtrl,

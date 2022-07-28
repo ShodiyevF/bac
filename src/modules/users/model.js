@@ -43,7 +43,7 @@ const companyOwnerGETModel = async (user_id) => {
         }
 
     } catch (error) {
-        console.log(error.message, 'companysGETModel');
+        console.log(error.message, 'companyOwnerGETModel');
     }
 }
 
@@ -120,7 +120,7 @@ const companysWorkersPermissionGETModel = async (owner_id, user_id) => {
 
 
     } catch (error) {
-        console.log(error.message, 'companysWorkersGETModel');
+        console.log(error.message, 'companysWorkersPermissionGETModel');
     }
 }
 
@@ -153,7 +153,7 @@ const companysWorkersPermissionPOSTModel = async (owner_id, user_id, { action, n
 
 
     } catch (error) {
-        console.log(error.message, 'companysWorkersGETModel');
+        console.log(error.message, 'companysWorkersPermissionPOSTModel');
     }
 }
 
@@ -190,7 +190,7 @@ const superAdminUsersGETModel = async (user_id) => {
 
 
     } catch (error) {
-        console.log(error.message, 'companysWorkersGETModel');
+        console.log(error.message, 'superAdminUsersGETModel');
     }
 }
 
