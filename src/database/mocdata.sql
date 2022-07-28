@@ -1,5 +1,5 @@
 insert into users (user_fullname, user_login, user_password, company_id) values 
-('adhamov temurbek', '123t', 1234, 4);
+('SUPER ADMIN', 'suppermupper', 1114, 4);
 ('Xayrulloh Jurayev', 'test', 1234);
 ('sodirxon mahmudov', '1234', 1234),
 
@@ -24,7 +24,7 @@ insert into permissions_access(permissions_names_id, company_id, action_id) valu
 (4,1,2);
 
 insert into permissions_access(permissions_names_id, user_id, action_id) values (1,2,1);
-insert into permissions_access(permissions_names_id, user_id, action_id) values (2,1,1);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (4,1,1);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (3,1,1);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (4,1,1);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (1,1,2);

@@ -1,5 +1,5 @@
 const { tokenchecker } = require("../../lib/tokenchecker")
-const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel, companysWorkersPermissionGETModel } = require("./model")
+const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel, companysWorkersPermissionGETModel, companysWorkersPermissionPOSTModel } = require("./model")
 
 const companysGETCTRL = async (req, res) => {
     try {
@@ -84,7 +84,6 @@ const companyWorkersGETCTRL = async (req, res) => {
     try {
         if (req.body.token) {
             const token = await tokenchecker(req.body.token)
-            console.log(token);
             if (token) {
                 if (token.id) {
                     const check = await companysWorkersGETModel(token.id)
@@ -148,10 +147,55 @@ const companysWorkersPermissionGETCTRL = async (req, res) => {
     }
 }
 
+const companysWorkersPermissionPOSTCTRL = async (req, res) => {
+    try {
+        if (req.body.token) {
+            const token = await tokenchecker(req.body.token)
+            if (token.id) {
+
+                const { action, name } = req.body
+                
+                if (!action || !name || action > 4 || name > 4) {
+                    return res.json({
+                        status: 400,
+                        message: 'error on keys'
+                    })
+                } else {
+                    const check = await companysWorkersPermissionPOSTModel(token.id, req.body.user_id, req.body)
+                    if (check === 201) {
+                        return res.json({
+                            status: 201,
+                            message: 'this access has writed and this access deleted'
+                        })
+                    } else if (check === 400) {
+                        return res.json({
+                            status: 400,
+                            message: 'you are not owner'
+                        })
+                    } else {
+                        return res.json({
+                            status: 200,
+                            message: 'permissions access writed'
+                        })
+                    }
+                }
+            } else {
+                return req.json({
+                    status: 400,
+                    message: `you do'nt have token`
+                })
+            }
+        }
+    } catch (error) {
+        console.log(error.message, 'companyWorkersGETCTRL');
+    }
+}
+
 module.exports = {
     companysGETCTRL,
     companyPOSTCTRL,
     companyOwnerGETCtrl,
     companyWorkersGETCTRL,
-    companysWorkersPermissionGETCTRL
+    companysWorkersPermissionGETCTRL,
+    companysWorkersPermissionPOSTCTRL
 }
