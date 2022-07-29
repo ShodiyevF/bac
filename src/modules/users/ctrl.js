@@ -152,7 +152,7 @@ const companysWorkersPermissionPOSTCTRL = async (req, res) => {
         if (req.body.token) {
             const token = await tokenchecker(req.body.token)
             if (token.id) {
-
+                
                 const { action, name } = req.body
                 
                 if (!action || !name || action > 4 || name > 4) {
@@ -197,7 +197,7 @@ const superAdminUsersGETCTRL = async (req, res) => {
             if (req.body.token) {
                 const checked_id = await tokenchecker(req.body.token)
                 if (checked_id.id) {
-
+                    
                     if (!checked_id) {
                         return res.json({
                             status: 400,
@@ -236,7 +236,48 @@ const superAdminUsersGETCTRL = async (req, res) => {
     }
 }
 
-
+const masterPostCTRL = async (req, res) => {
+    try {
+        const { fullname, login, password, company_id } = req.body
+        if (!fullname || fullname.length > 56 || !login || login.length > 54 || !password || password.toString().length > 7 || typeof password != 'number' || !company_id || company_id > 99 ) {
+            const checked_id = await tokenchecker(req.body.token)
+            if (checked_id.id) {
+                
+                if (!checked_id) {
+                    return res.json({
+                        status: 400,
+                        message: 'token has not provided'
+                    })
+                } else {
+                    const check = await masterPostCTRL(checked_id.id, req.body)
+                    if (check === 400) {
+                        return res.json({
+                            status: 400,
+                            message: 'you are not owner'
+                        })
+                    } else {
+                        return res.json({
+                            status: 200,
+                            message: 'user has writed'
+                        })
+                    }
+                }
+            } else {
+                return req.json({
+                    status: 400,
+                    message: `you do'nt have token`
+                })
+            }
+        } else {
+            return req.json({
+                status: 400,
+                message: `error on keys`
+            })
+        }
+    } catch (error) {
+        console.log(error.message, 'superAdminUsersGETCTRL');
+    }
+}
 
 module.exports = {
     companysGETCTRL,
@@ -245,5 +286,6 @@ module.exports = {
     companyWorkersGETCTRL,
     companysWorkersPermissionGETCTRL,
     companysWorkersPermissionPOSTCTRL,
-    superAdminUsersGETCTRL
+    superAdminUsersGETCTRL,
+    masterPostCTRL
 }
