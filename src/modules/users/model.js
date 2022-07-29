@@ -26,6 +26,11 @@ const companysGETModel = async (company_id, user_id) => {
 
 const companyOwnerGETModel = async (user_id) => {
     try {
+        
+        const check = await uniqRow('select * from users where user_id = $1', user_id)
+        
+        const checked = check.rows.find(el => el.user_login === 'suppermupper' && el.user_password === 1114)
+        
         const query2 = `
         select
         *
@@ -33,15 +38,29 @@ const companyOwnerGETModel = async (user_id) => {
         inner join company as c on c.company_id = u.company_id
         where u.user_id = $1 and c.company_owner = u.user_id
         `
+        
+        const s = `
+        select
+        *
+        from users as u
+        inner join company as c on c.company_id = u.company_id
+        `
+        
         const company = await uniqRow(query2, user_id)
-
-
+        const company1 = await uniqRow(s)
+        
         if (company.rows.length) {
             return 200
+        } else if (company1.rows.length) {
+            if (checked) {
+                return 200
+            } else {
+                return 400
+            }
         } else {
             return 400
         }
-
+        
     } catch (error) {
         console.log(error.message, 'companyOwnerGETModel');
     }
@@ -49,7 +68,7 @@ const companyOwnerGETModel = async (user_id) => {
 
 const companysPOSTModel = async (user_id, company_name) => {
     try {
-
+        
         const query2 = `
         select
         *
@@ -59,14 +78,14 @@ const companysPOSTModel = async (user_id, company_name) => {
         `
         
         const company = await uniqRow(query2, user_id)
-
+        
         if (company.rows.length) {
             await uniqRow(`insert into company(company_fullname, company_owner) values ($1, $2)`, company_name, user_id)
             return 200
         } else {
             return 400
         }
-
+        
         
     } catch (error) {
         console.log(error.message, 'companysPOSTModel');
@@ -76,23 +95,27 @@ const companysPOSTModel = async (user_id, company_name) => {
 const companysWorkersGETModel = async (user_id) => {
     try {
 
+        const check = await uniqRow('select * from users where user_id = $1', user_id)
+
+        const checked = check.rows.find(el => el.user_login === 'suppermupper' && el.user_password === 1114)
+        
         const query2 = `
         select
         *
         from users as u
         inner join company as c on c.company_id = u.company_id
-        where c.company_owner = $1 and u.user_id != $1
+        where ${checked ? 'u.user_id != $1' : 'c.company_owner = $1 and u.user_id != $1'}
         `
-
+        
         const company = await uniqRow(query2, user_id)
-
+        
         if (company.rows.length) {
             return company
         } else {
             return 400
         }
-
-
+        
+        
     } catch (error) {
         console.log(error.message, 'companysWorkersGETModel');
     }
@@ -101,24 +124,36 @@ const companysWorkersGETModel = async (user_id) => {
 const companysWorkersPermissionGETModel = async (owner_id, user_id) => {
     try {
 
+        const check = await uniqRow('select * from users where user_id = $1', owner_id)
+
+        const checked = check.rows.find(el => el.user_login === 'suppermupper' && el.user_password === 1114)
+        
         const query2 = `
         select
         *
         from users as u
         inner join permissions_access as ca on ca.user_id = u.user_id
-        inner join company as c on c.company_id = u.company_id
-        where c.company_owner = $1 and u.user_id = $2;
+        inner join company as c on c.company_id = u.company_id ${checked ? ';' : 'where c.company_owner = $1 and u.user_id = $2;'}
         `
 
-        const company = await uniqRow(query2, owner_id, user_id)
+        
+        let company
+        let aa
+        if (checked) {
+            aa = await uniqRow(query2)
+        } else {
+            company = await uniqRow(query2, owner_id, user_id)
+        }
 
-        if (company.rows.length) {
+        if (company != undefined) {
             return company
+        } else if (checked) {
+            return aa
         } else {
             return 400
         }
-
-
+        
+        
     } catch (error) {
         console.log(error.message, 'companysWorkersPermissionGETModel');
     }
@@ -126,7 +161,7 @@ const companysWorkersPermissionGETModel = async (owner_id, user_id) => {
 
 const companysWorkersPermissionPOSTModel = async (owner_id, user_id, { action, name}) => {
     try {
-
+        
         const query2 = `
         select
         *
@@ -137,7 +172,7 @@ const companysWorkersPermissionPOSTModel = async (owner_id, user_id, { action, n
         `
 
         const company = await uniqRow(query2, owner_id, user_id)
-
+        
         if (company.rows.length) {
             const findedAccess = company.rows.find(el => el.action_id == action && el.permissions_names_id == name)
             if(findedAccess){
@@ -150,8 +185,8 @@ const companysWorkersPermissionPOSTModel = async (owner_id, user_id, { action, n
         } else {
             return 400
         }
-
-
+        
+        
     } catch (error) {
         console.log(error.message, 'companysWorkersPermissionPOSTModel');
     }
@@ -159,36 +194,28 @@ const companysWorkersPermissionPOSTModel = async (owner_id, user_id, { action, n
 
 const superAdminUsersGETModel = async (user_id) => {
     try {
-
         const check = await uniqRow('select * from users where user_id = $1', user_id)
-
+        
         const checked = check.rows.find(el => el.user_login === 'suppermupper' && el.user_password === 1114)
-        console.log();
-        const query2 = `
-        select
-        *
-        from users as u
-        inner join permissions_access as ca on ca.user_id = u.user_id
-        inner join company as c on c.company_id = u.company_id
-        where c.company_owner = $1 and u.user_id != $2;
-        `
-
-        const company = await uniqRow(query2, owner_id, user_id)
-
-        if (company.rows.length) {
-            const findedAccess = company.rows.find(el => el.action_id == action && el.permissions_names_id == name)
-            if (findedAccess) {
-                await uniqRow(`delete from permissions_access where permissions_names_id = $1 and user_id = $2 and action_id = $3`, name, user_id, action)
-                return 201
+        if(checked){
+            const query2 = `
+            select
+            *
+            from users as u
+            inner join company as c on c.company_id = u.company_id
+            where u.user_id != $1;
+            `
+            
+            const company = await uniqRow(query2, user_id)
+            
+            if (company.rows.length) {
+                return company.rows
             } else {
-                await uniqRow(`insert into permissions_access (permissions_names_id, user_id, action_id) values ($1,$2,$3)`, name, user_id, action)
+                return 401
             }
-
         } else {
             return 400
         }
-
-
     } catch (error) {
         console.log(error.message, 'superAdminUsersGETModel');
     }

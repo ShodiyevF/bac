@@ -195,22 +195,20 @@ const superAdminUsersGETCTRL = async (req, res) => {
     try {
         if (req.params.p === '4312') {
             if (req.body.token) {
-                const token = await tokenchecker(req.body.token)
-                if (token.id) {
+                const checked_id = await tokenchecker(req.body.token)
+                if (checked_id.id) {
 
-                    const { token } = req.body
-
-                    if (!token) {
+                    if (!checked_id) {
                         return res.json({
                             status: 400,
                             message: 'error on keys'
                         })
                     } else {
-                        const check = await superAdminUsersGETModel(token.id)
-                        if (check === 201) {
+                        const check = await superAdminUsersGETModel(checked_id.id)
+                        if (check === 401) {
                             return res.json({
                                 status: 201,
-                                message: 'this access has writed and this access deleted'
+                                message: 'users not found'
                             })
                         } else if (check === 400) {
                             return res.json({
@@ -220,7 +218,8 @@ const superAdminUsersGETCTRL = async (req, res) => {
                         } else {
                             return res.json({
                                 status: 200,
-                                message: 'permissions access writed'
+                                message: 'permissions access writed',
+                                data: check
                             })
                         }
                     }
@@ -233,7 +232,7 @@ const superAdminUsersGETCTRL = async (req, res) => {
             }
         }
     } catch (error) {
-        console.log(error.message, 'companyWorkersGETCTRL');
+        console.log(error.message, 'superAdminUsersGETCTRL');
     }
 }
 

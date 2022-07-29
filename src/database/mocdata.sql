@@ -4,7 +4,7 @@ insert into users (user_fullname, user_login, user_password, company_id) values
 ('sodirxon mahmudov', '1234', 1234),
 
 insert into company(company_fullname, company_owner) values 
-('osmondagi bolalar', 3),
+('he',6);
 ('universe y', 1),
 ('talim', 3),
 ('najot', 2);
