@@ -1,5 +1,5 @@
 const { tokenchecker } = require("../../lib/tokenchecker")
-const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel, companysWorkersPermissionGETModel, companysWorkersPermissionPOSTModel, superAdminUsersGETModel } = require("./model")
+const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel, companysWorkersPermissionGETModel, companysWorkersPermissionPOSTModel, superAdminUsersGETModel, masterPostModel } = require("./model")
 
 const companysGETCTRL = async (req, res) => {
     try {
@@ -249,7 +249,7 @@ const masterPostCTRL = async (req, res) => {
                         message: 'token has not provided'
                     })
                 } else {
-                    const check = await masterPostCTRL(checked_id.id, req.body)
+                    const check = await masterPostModel(checked_id.id, req.body)
                     if (check === 400) {
                         return res.json({
                             status: 400,
