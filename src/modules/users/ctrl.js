@@ -236,6 +236,8 @@ const superAdminUsersGETCTRL = async (req, res) => {
     }
 }
 
+
+
 module.exports = {
     companysGETCTRL,
     companyPOSTCTRL,

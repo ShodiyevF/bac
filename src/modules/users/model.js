@@ -221,6 +221,29 @@ const superAdminUsersGETModel = async (user_id) => {
     }
 }
 
+const masterPostModel = async (user_id, { fullname, login, password, company_id }) => {
+    try {
+
+        const query = `
+        select
+        *
+        from company as c
+        where c.company_owner = $1
+        `
+        
+        const check = await uniqRow(query, user_id)
+
+        if (check.rows.length) {
+            await uniqRow('insert into users (user_fullname, user_login, user_password, company_id) values ($1, $2, $3, $4)', fullname, login, password, company_id)
+        } else {
+            return 400
+        }
+        
+    } catch (error) {
+        console.log(error.message, 'superAdminUsersGETModel');
+    }
+}
+
 module.exports = {
     companysGETModel,
     companysPOSTModel,
@@ -228,5 +251,6 @@ module.exports = {
     companysWorkersGETModel,
     companysWorkersPermissionGETModel,
     companysWorkersPermissionPOSTModel,
-    superAdminUsersGETModel
+    superAdminUsersGETModel,
+    masterPostModel
 }
