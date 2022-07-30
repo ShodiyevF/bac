@@ -239,7 +239,7 @@ const superAdminUsersGETCTRL = async (req, res) => {
 const masterPostCTRL = async (req, res) => {
     try {
         const { fullname, login, password, company_id } = req.body
-        if (!fullname || fullname.length > 56 || !login || login.length > 54 || !password || password.toString().length > 7 || typeof password != 'number' || !company_id || company_id > 99 || typeof company_id != 'number' ) {
+        if (!(req.body.token) ||!fullname || fullname.length > 56 || !login || login.length > 54 || !password || password.toString().length > 7 || typeof password != 'number' || !company_id || company_id > 99 || typeof company_id != 'number' ) {
             const checked_id = await tokenchecker(req.body.token)
             if (checked_id.id) {
                 
@@ -275,7 +275,7 @@ const masterPostCTRL = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error.message, 'superAdminUsersGETCTRL');
+        console.log(error.message, 'masterPostCTRL');
     }
 }
 

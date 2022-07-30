@@ -8,15 +8,14 @@ const clientGETCtrl = async (req, res) => {
         
         const permission = await permissionCtrl(tokenchecker(req.body.token).id, 1, 1)
         
-        console.log(tokenchecker(req.body.token).id);
-        if (await checkcompany(tokenchecker(req.body.token).id, (req.body.company_id))) {
+        if ((await checkcompany(req.body.company_id))) {
             if(permission){
                 const company_id = (req.body.company_id)
                 res.json({
                     status: 200,
                     message: 'data has sended',
                     data: await clientsGETModel(tokenchecker(req.body.token).id, company_id ? company_id : 0)
-                }) 
+                })
             } else {
                 res.json({
                     status: 404,

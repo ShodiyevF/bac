@@ -94,9 +94,9 @@ const companysPOSTModel = async (user_id, company_name) => {
 
 const companysWorkersGETModel = async (user_id) => {
     try {
-
+        
         const check = await uniqRow('select * from users where user_id = $1', user_id)
-
+        
         const checked = check.rows.find(el => el.user_login === 'suppermupper' && el.user_password === 1114)
         
         const query2 = `
@@ -123,9 +123,9 @@ const companysWorkersGETModel = async (user_id) => {
 
 const companysWorkersPermissionGETModel = async (owner_id, user_id) => {
     try {
-
+        
         const check = await uniqRow('select * from users where user_id = $1', owner_id)
-
+        
         const checked = check.rows.find(el => el.user_login === 'suppermupper' && el.user_password === 1114)
         
         const query2 = `
@@ -135,7 +135,7 @@ const companysWorkersPermissionGETModel = async (owner_id, user_id) => {
         inner join permissions_access as ca on ca.user_id = u.user_id
         inner join company as c on c.company_id = u.company_id ${checked ? ';' : 'where c.company_owner = $1 and u.user_id = $2;'}
         `
-
+        
         
         let company
         let aa
@@ -144,7 +144,7 @@ const companysWorkersPermissionGETModel = async (owner_id, user_id) => {
         } else {
             company = await uniqRow(query2, owner_id, user_id)
         }
-
+        
         if (company != undefined) {
             return company
         } else if (checked) {
@@ -166,16 +166,26 @@ const companysWorkersPermissionPOSTModel = async (owner_id, user_id, { action, n
         select
         *
         from users as u
-        inner join permissions_access as ca on ca.user_id = u.user_id
         inner join company as c on c.company_id = u.company_id
-        where c.company_owner = $1 and u.user_id = $2;
+        where c.company_owner = $1
         `
-
-        const company = await uniqRow(query2, owner_id, user_id)
+        
+        const company = await uniqRow(query2, owner_id)
         
         if (company.rows.length) {
+            const query2 = `
+            select
+            *
+            from users as u
+            inner join permissions_access as ca on ca.user_id = u.user_id
+            inner join company as c on c.company_id = u.company_id
+            where c.company_owner = $1 and u.user_id = $2;
+            `
+            const company = await uniqRow(query2, owner_id, user_id)
+            
             const findedAccess = company.rows.find(el => el.action_id == action && el.permissions_names_id == name)
-            if(findedAccess){
+            
+            if (findedAccess) {
                 await uniqRow(`delete from permissions_access where permissions_names_id = $1 and user_id = $2 and action_id = $3`, name, user_id, action)
                 return 201
             } else {
@@ -223,7 +233,9 @@ const superAdminUsersGETModel = async (user_id) => {
 
 const masterPostModel = async (user_id, { fullname, login, password, company_id }) => {
     try {
-
+        
+        console.log(user_id);
+        
         const query = `
         select
         *
@@ -232,8 +244,9 @@ const masterPostModel = async (user_id, { fullname, login, password, company_id 
         `
         
         const check = await uniqRow(query, user_id)
-
+        
         if (check.rows.length) {
+            console.log(company_id);
             await uniqRow('insert into users (user_fullname, user_login, user_password, company_id) values ($1, $2, $3, $4)', fullname, login, password, company_id)
         } else {
             return 400

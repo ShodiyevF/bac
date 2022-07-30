@@ -2,18 +2,18 @@ const { uniqRow } = require("../../lib/pg")
 
 const ordersGETModel = async (user_id, company_id) => {
     try {
+        const owner = await uniqRow('select * from company where company_owner = $1', user_id)
         const companys = await uniqRow('select * from users where company_id = $1 and user_id = $2', company_id, user_id)
         const companysowner = await uniqRow('select * from company where company_id = $1 and company_owner = $2', company_id, user_id)
         const row = +company_id
-        const birniam = ((companys.length ? companys : companysowner)).rows.find(el => el.company_id === row)
+        const birniam = ((companys.rows.length ? companys : companysowner)).rows.find(el => el.company_id === row)
         const mycompany = companys.rows[row > companys.rows.length ? 0 : row === 0 ? 0 : row - 1]
         const query = `
         select
         *
         from orders as o
-        inner join company as c on c.company_id = o.company_id
-        inner join clients as cc on cc.company_id = c.company_id
-        where o.company_id = $1
+        inner join clients as c on c.company_id = o.company_id
+        where ${owner.rows.length ? 'o.company_id = $1 and o.client_id = c.client_id' : 'o.company_id = $1 and o.client_id = c.client_id and o.order_deleted = 0'}
         order by order_id desc
         `
         const orders = await uniqRow(query, birniam.company_id)

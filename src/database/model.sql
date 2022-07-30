@@ -56,6 +56,8 @@ create table orders(
     order_price text not null,
     order_about text not null,
     client_id int not null references clients(client_id),
+    user_deleter int,
+    order_deleted smallint default 0,
     company_id int not null references company(company_id)
 );
 

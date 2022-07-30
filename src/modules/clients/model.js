@@ -6,6 +6,7 @@ const clientsGETModel = async (user_id, company_id) => {
         const owner = await uniqRow('select * from company where company_owner = $1', user_id)
         
         
+        
         const query =`
         select
         *
@@ -68,6 +69,12 @@ const clientDELETEModel = async(user_id, {company_id, client_id}) => {
             const checkcompany = await uniqRow('select * from clients where company_id = $1 and client_id = $2', company_id, client_id)
             if (checkcompany.rows.length) {
                 await uniqRow('update clients set client_delete = 1, client_deleter = $3 where company_id = $1 and client_id = $2', company_id, client_id, user_id.id)
+                const orders = await uniqRow('select * from orders where client_id = $1', client_id)
+                if (orders.rows.length) {
+                    for (const i of orders.rows) {
+                        await uniqRow('update orders set order_deleted = 1, user_deleter = $2 where client_id = $1', client_id, user_id.id)
+                    }
+                }
                 return 200
             } else {
                 return 404

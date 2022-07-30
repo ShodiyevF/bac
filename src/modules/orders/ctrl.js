@@ -7,9 +7,9 @@ const orderGETCtrl = async (req, res) => {
     try {
         if (req.body.token) {
             const read = permissionCtrl(tokenchecker(req.body.token).id, 1, 2)
-            if (await checkcompany(tokenchecker(req.body.token).id, +(req.body.company_id))) {
+            if (await checkcompany(+(req.body.company_id))) {
+                // console.log((await ordersGETModel(+(tokenchecker(req.body.token).id), +(req.body.company_id) ? +(req.body.company_id) : 0)).rows);
                 if (await read) {
-                    // console.log(await ordersGETModel(+(tokenchecker(req.body.token).id), req.body.company_id ? req.body.company_id - 1 : 0));
                     return res.json({
                         status: 200,
                         message: 'data has sended',
@@ -102,9 +102,7 @@ const orderOneGETCtrl = async (req, res) => {
 const orderUPDATEStatusCtrl = async (req, res) => {
     try {
         if(req.body.token){
-            const update = permissionCtrl(tokenchecker(req.body.token), 4, 2)
-            console.log(update);
-            
+            const update = permissionCtrl((tokenchecker(req.body.token)).id, 4, 2)            
             if (await update) { 
                 if (req.body.status && typeof req.body.status === 'number' && req.body.status <= 8 && req.body.company_id && typeof req.body.company_id === 'number' && req.body.order_id && typeof req.body.order_id === 'number') {
                     const updateSTATUS = await orderUPDATEStatusModel(req.body)

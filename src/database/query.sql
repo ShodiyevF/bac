@@ -44,3 +44,13 @@ delete from clients where client_id = 9;
 select
 *
 from clients, orders;
+
+
+ALTER TABLE orders
+ADD order_deleted smallint default 0;
+
+ALTER TABLE orders
+ADD user_deleter smallint;
+
+ALTER TABLE orders
+DROP COLUMN client_deleted;
