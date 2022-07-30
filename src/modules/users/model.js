@@ -203,8 +203,10 @@ const WorkersCompanyPUTModel = async (owner_id, company_id, user_id ) => {
         where c.company_owner = $1
         `
 
+        console.log(owner_id);
         const company = await uniqRow(query2, owner_id)
 
+        // console.log(company);
         if (company.rows.length) {
             const query2 = `
             update users set company_id = $1 where user_id = $2

@@ -194,18 +194,19 @@ const companysWorkersPermissionPOSTCTRL = async (req, res) => {
 const WorkersCompanyPUTCTRL = async (req, res) => {
     try {
         if (req.body.token) {
-            const token = await tokenchecker(req.body.token)
-            if (token.id) {
+            const tokena= await tokenchecker(req.body.token)
+            if (tokena.id) {
 
-                const { token, user_id, company_id } = req.body
+                const {user_id, company_id } = req.body
 
-                if (!action || !user_id || company_id ) {
+                if (!user_id || !company_id ) {
                     return res.json({
                         status: 400,
                         message: 'error on keys'
                     })
                 } else {
-                    const check = await WorkersCompanyPUTModel(token.id, company_id, user_id)
+                    console.log(tokena);
+                    const check = await WorkersCompanyPUTModel(tokena.id, company_id, user_id)
                     if (check === 200) {
                         return res.json({
                             status: 201,
@@ -226,7 +227,7 @@ const WorkersCompanyPUTCTRL = async (req, res) => {
             }
         }
     } catch (error) {
-        console.log(error.message, 'companyWorkersGETCTRL');
+        console.log(error.message, 'WorkersCompanyPUTCTRL');
     }
 }
 
