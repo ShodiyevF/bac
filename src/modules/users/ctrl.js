@@ -319,6 +319,49 @@ const masterPostCTRL = async (req, res) => {
     }
 }
 
+const userDeleteCTRL = async (req, res) => {
+    try {
+        const { token, user_id } = req.body
+        if (!(token) || !user_id || user_id > 3) {
+            const checked_id = await tokenchecker(req.body.token)
+            if (checked_id.id) {
+
+                if (!checked_id) {
+                    return res.json({
+                        status: 400,
+                        message: 'token has not provided'
+                    })
+                } else {
+                    const check = await userDeleteModel(checked_id.id, user_id)
+                    if (check === 400) {
+                        return res.json({
+                            status: 400,
+                            message: 'you are not owner'
+                        })
+                    } else {
+                        return res.json({
+                            status: 200,
+                            message: 'user has deleted'
+                        })
+                    }
+                }
+            } else {
+                return req.json({
+                    status: 400,
+                    message: `you do'nt have token`
+                })
+            }
+        } else {
+            return req.json({
+                status: 400,
+                message: `error on keys`
+            })
+        }
+    } catch (error) {
+        console.log(error.message, 'userDeleteCTRL');
+    }
+}
+
 module.exports = {
     companysGETCTRL,
     companyPOSTCTRL,
@@ -328,5 +371,6 @@ module.exports = {
     companysWorkersPermissionPOSTCTRL,
     superAdminUsersGETCTRL,
     masterPostCTRL,
-    WorkersCompanyPUTCTRL
+    WorkersCompanyPUTCTRL,
+    userDeleteCTRL
 }

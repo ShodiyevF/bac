@@ -54,3 +54,6 @@ ADD user_deleter smallint;
 
 ALTER TABLE orders
 DROP COLUMN client_deleted;
+
+ALTER TABLE users
+ADD user_delete smallint;
