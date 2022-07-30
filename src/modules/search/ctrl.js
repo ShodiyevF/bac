@@ -4,12 +4,12 @@ const { searchModel } = require("./model")
 const searchCtrl = async (req, res) => {
     try {
         
-        const key = (req.body.key).split((req.body.key)[0] === '#' ? '#' : '@')
+        const key = (req.body.key).split((req.body.key)[0] === '#' ? '#' : (req.body.key)[0] === '+' ? '+' : '@')
         
         if (key[1]) {
             if(!(isNaN(+(key[1])))){
                 if (req.body.key && typeof +(key[1]) === 'number') {
-                    const model = await searchModel(req.body.key, tokenchecker(req.body.token), req.body.company_id)
+                    const model = await searchModel(req.body.key, tokenchecker(req.body.token), req.body.company_id, req.body.action)
                     if (model === 400) {
                         return res.json({
                             status: 400,
