@@ -1,5 +1,5 @@
 const { tokenchecker } = require("../../lib/tokenchecker")
-const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel, companysWorkersPermissionGETModel, companysWorkersPermissionPOSTModel, superAdminUsersGETModel, masterPostModel } = require("./model")
+const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel, companysWorkersPermissionGETModel, companysWorkersPermissionPOSTModel, superAdminUsersGETModel, masterPostModel, WorkersCompanyPUTModel } = require("./model")
 
 const companysGETCTRL = async (req, res) => {
     try {
@@ -191,6 +191,45 @@ const companysWorkersPermissionPOSTCTRL = async (req, res) => {
     }
 }
 
+const WorkersCompanyPUTCTRL = async (req, res) => {
+    try {
+        if (req.body.token) {
+            const token = await tokenchecker(req.body.token)
+            if (token.id) {
+
+                const { token, user_id, company_id } = req.body
+
+                if (!action || !user_id || company_id ) {
+                    return res.json({
+                        status: 400,
+                        message: 'error on keys'
+                    })
+                } else {
+                    const check = await WorkersCompanyPUTModel(token.id, company_id, user_id)
+                    if (check === 200) {
+                        return res.json({
+                            status: 201,
+                            message: 'this access has writed and this access deleted'
+                        })
+                    } else {
+                        return res.json({
+                            status: 400,
+                            message: 'you are not owner'
+                        })
+                    }
+                }
+            } else {
+                return req.json({
+                    status: 400,
+                    message: `you do'nt have token`
+                })
+            }
+        }
+    } catch (error) {
+        console.log(error.message, 'companyWorkersGETCTRL');
+    }
+}
+
 const superAdminUsersGETCTRL = async (req, res) => {
     try {
         if (req.params.p === '4312') {
@@ -287,5 +326,6 @@ module.exports = {
     companysWorkersPermissionGETCTRL,
     companysWorkersPermissionPOSTCTRL,
     superAdminUsersGETCTRL,
-    masterPostCTRL
+    masterPostCTRL,
+    WorkersCompanyPUTCTRL
 }

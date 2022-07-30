@@ -192,6 +192,37 @@ const companysWorkersPermissionPOSTModel = async (owner_id, user_id, { action, n
     }
 }
 
+const WorkersCompanyPUTModel = async (owner_id, company_id, user_id ) => {
+    try {
+
+        const query2 = `
+        select
+        *
+        from users as u
+        inner join company as c on c.company_id = u.company_id
+        where c.company_owner = $1
+        `
+
+        const company = await uniqRow(query2, owner_id)
+
+        if (company.rows.length) {
+            const query2 = `
+            update users set company_id = $1 where user_id = $2
+            `
+            const company = await uniqRow(query2, company_id, user_id)
+
+            return 200
+
+        } else {
+            return 400
+        }
+
+
+    } catch (error) {
+        console.log(error.message, 'WorkersCompanyPUTModel');
+    }
+}
+
 const superAdminUsersGETModel = async (user_id) => {
     try {
         const check = await uniqRow('select * from users where user_id = $1', user_id)
@@ -255,5 +286,6 @@ module.exports = {
     companysWorkersPermissionGETModel,
     companysWorkersPermissionPOSTModel,
     superAdminUsersGETModel,
-    masterPostModel
+    masterPostModel,
+    WorkersCompanyPUTModel
 }
