@@ -97,14 +97,13 @@ const companysWorkersGETModel = async (user_id) => {
         
         const check = await uniqRow('select * from users where user_id = $1', user_id)
         
-        const checked = check.rows.find(el => el.user_login === 'suppermupper' && el.user_password === 1114)
         
         const query2 = `
         select
         *
         from users as u
         inner join company as c on c.company_id = u.company_id
-        where ${checked ? 'u.user_id != $1' : 'c.company_owner = $1 and u.user_id != $1'}
+        where c.company_owner = $1 and u.user_id != $1
         `
         
         const company = await uniqRow(query2, user_id)
@@ -124,31 +123,22 @@ const companysWorkersGETModel = async (user_id) => {
 const companysWorkersPermissionGETModel = async (owner_id, user_id) => {
     try {
         
-        const check = await uniqRow('select * from users where user_id = $1', owner_id)
-        
-        const checked = check.rows.find(el => el.user_login === 'suppermupper' && el.user_password === 1114)
-        
         const query2 = `
         select
         *
         from users as u
         inner join permissions_access as ca on ca.user_id = u.user_id
-        inner join company as c on c.company_id = u.company_id ${checked ? ';' : 'where c.company_owner = $1 and u.user_id = $2;'}
+        inner join company as c on c.company_id = u.company_id 
+        where c.company_owner = $1 and u.user_id = $2;
         `
         
         
-        let company
-        let aa
-        if (checked) {
-            aa = await uniqRow(query2)
-        } else {
-            company = await uniqRow(query2, owner_id, user_id)
-        }
+        console.log(owner_id);
+        console.log(user_id);
+        let company = await uniqRow(query2, owner_id, user_id)
         
-        if (company != undefined) {
+        if (company.rows.length) {
             return company
-        } else if (checked) {
-            return aa
         } else {
             return 400
         }

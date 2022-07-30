@@ -7,12 +7,12 @@ async function recoverpass(email, pass) {
         let testAccount = await nodemailer.createTestAccount();
         
         let transporter = nodemailer.createTransport({
-            service: "smtp.ethereal.email",
+            service: "google",
             port: 587,
             secure: false,
             auth: {
-                user: testAccount.user,
-                pass: testAccount.pass,
+                user: "servicecontroluz@gmail.com",
+                pass: "5555as555",
             }
         });
 
