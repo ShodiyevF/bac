@@ -1,10 +1,12 @@
-insert into users (user_fullname, user_login, user_password, company_id) values 
+
+
+insert into users (user_fullname, user_login, user_password) values 
+('admin', 'nasiyasavdo', 5555555);
 ('SUPER ADMIN', 'suppermupper', 1114, 4);
-('Xayrulloh Jurayev', 'test', 1234);
 ('sodirxon mahmudov', '1234', 1234),
 
 insert into company(company_fullname, company_owner) values 
-('he',6);
+('Nasiya Savdo', 1);
 ('universe y', 1),
 ('talim', 3),
 ('najot', 2);
@@ -23,8 +25,8 @@ insert into permissions_access(permissions_names_id, company_id, action_id) valu
 (2,1,1),
 (4,1,2);
 
-insert into permissions_access(permissions_names_id, user_id, action_id) values (1,2,1);
-insert into permissions_access(permissions_names_id, user_id, action_id) values (4,1,1);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (1,1,1);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (2,1,1);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (3,1,1);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (4,1,1);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (1,1,2);
