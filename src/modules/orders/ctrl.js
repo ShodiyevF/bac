@@ -8,7 +8,6 @@ const orderGETCtrl = async (req, res) => {
         if (req.body.token) {
             const read = permissionCtrl(tokenchecker(req.body.token).id, 1, 2)
             if (await checkcompany(+(req.body.company_id))) {
-                // console.log((await ordersGETModel(+(tokenchecker(req.body.token).id), +(req.body.company_id) ? +(req.body.company_id) : 0)).rows);
                 if (await read) {
                     return res.json({
                         status: 200,

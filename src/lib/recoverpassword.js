@@ -23,9 +23,6 @@ async function recoverpass(email, pass) {
             text: "Hello world?",
             html: `your new password is: <b>${pass}</b><br><b>please remember it</b>`,
         });
-
-        console.log("Message sent: %s", info.messageId);
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     } catch (error) {
         console.log(error.message, 'recoverpass');
     }

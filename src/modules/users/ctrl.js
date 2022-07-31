@@ -1,5 +1,5 @@
 const { tokenchecker } = require("../../lib/tokenchecker")
-const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel, companysWorkersPermissionGETModel, companysWorkersPermissionPOSTModel, superAdminUsersGETModel, masterPostModel, WorkersCompanyPUTModel } = require("./model")
+const { companysGETModel, companysPOSTModel, companyOwnerGETModel, companysWorkersGETModel, companysWorkersPermissionGETModel, companysWorkersPermissionPOSTModel, superAdminUsersGETModel, masterPostModel, WorkersCompanyPUTModel, userDeleteModel } = require("./model")
 
 const companysGETCTRL = async (req, res) => {
     try {
@@ -196,16 +196,15 @@ const WorkersCompanyPUTCTRL = async (req, res) => {
         if (req.body.token) {
             const tokena= await tokenchecker(req.body.token)
             if (tokena.id) {
-
+                
                 const {user_id, company_id } = req.body
-
+                
                 if (!user_id || !company_id ) {
                     return res.json({
                         status: 400,
                         message: 'error on keys'
                     })
                 } else {
-                    console.log(tokena);
                     const check = await WorkersCompanyPUTModel(tokena.id, company_id, user_id)
                     if (check === 200) {
                         return res.json({
@@ -322,39 +321,32 @@ const masterPostCTRL = async (req, res) => {
 const userDeleteCTRL = async (req, res) => {
     try {
         const { token, user_id } = req.body
-        if (!(token) || !user_id || user_id > 3) {
-            const checked_id = await tokenchecker(req.body.token)
-            if (checked_id.id) {
-
-                if (!checked_id) {
+        const checked_id = await tokenchecker(req.body.token)
+        if (checked_id.id) {
+            
+            if (!checked_id) {
+                return res.json({
+                    status: 400,
+                    message: 'token has not provided'
+                })
+            } else {
+                const check = await userDeleteModel(checked_id.id, user_id)
+                if (check === 400) {
                     return res.json({
                         status: 400,
-                        message: 'token has not provided'
+                        message: 'you are not owner'
                     })
                 } else {
-                    const check = await userDeleteModel(checked_id.id, user_id)
-                    if (check === 400) {
-                        return res.json({
-                            status: 400,
-                            message: 'you are not owner'
-                        })
-                    } else {
-                        return res.json({
-                            status: 200,
-                            message: 'user has deleted'
-                        })
-                    }
+                    return res.json({
+                        status: 200,
+                        message: 'user has deleted'
+                    })
                 }
-            } else {
-                return req.json({
-                    status: 400,
-                    message: `you do'nt have token`
-                })
             }
         } else {
-            return req.json({
+            return res.json({
                 status: 400,
-                message: `error on keys`
+                message: `you do'nt have token`
             })
         }
     } catch (error) {

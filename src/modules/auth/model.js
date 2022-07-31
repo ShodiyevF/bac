@@ -30,7 +30,6 @@ const register = async ({ fullname, login, password }) => {
 
 const recoverPassword = async ({ login }, password) => {
     try {
-        console.log(login);
         return await uniqRow(`update users set user_password = $1 where user_login = $2;`, password, login)
     } catch (error) {
         console.log(error);

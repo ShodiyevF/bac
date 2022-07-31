@@ -131,10 +131,7 @@ const companysWorkersPermissionGETModel = async (owner_id, user_id) => {
         inner join company as c on c.company_id = u.company_id 
         where c.company_owner = $1 and u.user_id = $2;
         `
-        
-        
-        console.log(owner_id);
-        console.log(user_id);
+
         let company = await uniqRow(query2, owner_id, user_id)
         
         if (company.rows.length) {
@@ -289,7 +286,6 @@ const masterPostModel = async (user_id, { fullname, login, password, company_id 
         const check = await uniqRow(query, user_id)
         
         if (check.rows.length) {
-            console.log(company_id);
             await uniqRow('insert into users (user_fullname, user_login, user_password, company_id) values ($1, $2, $3, $4)', fullname, login, password, company_id)
         } else {
             return 400

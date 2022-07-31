@@ -35,7 +35,7 @@ const searchCtrl = async (req, res) => {
                         } else {
                             return res.json({
                                 status: 400,
-                                message: 'error on keys'
+                                message: 'errors'
                             })
                         }
                     }

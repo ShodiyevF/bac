@@ -14,8 +14,6 @@ const permissionCtrl = async (user_id, nameId, actionId) => {
         where u.user_id = $1;
         `
 
-        console.log(user_id);
-
         const test = await uniqRow(query, user_id == 0 ? user_id+1: user_id)
         
         const permissionsModel = test.rows
