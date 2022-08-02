@@ -1,4 +1,4 @@
-const { clientGETCtrl, clientPOSTCtrl, clientStatusPUTCtrl, clientDELETECtrl, clientPUTFullnameCtrl, clientPUTNumber1Ctrl, clientPUTNumber2Ctrl } = require('./ctrl')
+const { clientGETCtrl, clientPOSTCtrl, clientStatusPUTCtrl, clientDELETECtrl, clientPUTFullnameCtrl, clientPUTNumber1Ctrl, clientPUTNumber2Ctrl, clientPUTAboutCtrl } = require('./ctrl')
 
 const express = require('express').Router()
 
@@ -9,5 +9,6 @@ express.delete('/userdelete', (req, res) => clientDELETECtrl(req, res))
 express.put('/user/put/fullname', (req, res) => clientPUTFullnameCtrl(req, res))
 express.put('/user/put/number1', (req, res) => clientPUTNumber1Ctrl(req, res))
 express.put('/user/put/number2', (req, res) => clientPUTNumber2Ctrl(req, res))
+express.put('/user/put/about', (req, res) => clientPUTAboutCtrl(req, res))
 
 module.exports = express
