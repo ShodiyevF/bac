@@ -8,6 +8,5 @@ express.put('/userstatus', (req, res) => clientStatusPUTCtrl(req, res))
 express.delete('/userdelete', (req, res) => clientDELETECtrl(req, res))
 express.put('/user/put/fullname', (req, res) => clientPUTFullnameCtrl(req, res))
 express.put('/user/put/fullname', (req, res) => clientPUTFullnameCtrl(req, res))
-express.put('/user/put/fullname', (req, res) => clientPUTFullnameCtrl(req, res))
 
 module.exports = express
