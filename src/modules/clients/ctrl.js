@@ -188,6 +188,41 @@ const clientPUTNumber1Ctrl = async (req, res) => {
     }
 }
 
+const clientPUTNumber2Ctrl = async (req, res) => {
+    try {
+        const permission = await permissionCtrl(tokenchecker(req.body.token).id, 5, 1)
+
+
+        if (permission) {
+            const clientPUT = await clientPUTNumber2Model(await tokenchecker(req.body.token), req.body)
+            if (clientPUT == 200) {
+                res.json({
+                    status: 200,
+                    message: 'user has update'
+                })
+            } else if (clientPUT == 400) {
+                res.json({
+                    status: 404,
+                    message: 'company not found',
+                })
+            } else {
+                res.json({
+                    status: 404,
+                    message: 'user not found',
+                })
+            }
+        } else {
+            res.json({
+                status: 500,
+                message: `you do'nt have any permissions`
+            })
+        }
+
+    } catch (error) {
+        console.log(error.message, 'clientPUTNumber2Ctrl');
+    }
+}
+
 
 module.exports = {
     clientGETCtrl,
@@ -195,5 +230,6 @@ module.exports = {
     clientStatusPUTCtrl,
     clientDELETECtrl,
     clientPUTFullnameCtrl,
-    clientPUTNumber1Ctrl
+    clientPUTNumber1Ctrl,
+    clientPUTNumber2Ctrl
 }
