@@ -130,6 +130,27 @@ const clientPUTNumber1Model = async (user_id, { company_id, client_id, client_ph
     }
 }
 
+const clientPUTNumber2Model = async (user_id, { company_id, client_id, client_phone_number_second }) => {
+    try {
+
+        const checkuser = await uniqRow('select * from users where user_id = $1 and company_id = $2', user_id.id, company_id)
+        if (checkuser.rows.length) {
+            const c = (await uniqRow('select * from clients where company_id = $1 and client_id = $2', company_id, client_id)).rows
+            if (c[0]) {
+                await uniqRow('update clients set client_phone_number_second = $1 where client_id = $2', client_phone_number_second, client_id)
+                return 200
+            } else {
+                return 404
+            }
+        } else {
+            return 400
+        }
+
+    } catch (error) {
+        console.log(error.message, 'clientPUTModel')
+    }
+}
+
 
 module.exports = {
     clientsGETModel,
@@ -137,5 +158,6 @@ module.exports = {
     clientsStatusPUTModel,
     clientDELETEModel,
     clientPUTFullnameModel,
-    clientPUTNumber1Model
+    clientPUTNumber1Model,
+    clientPUTNumber2Model
 }
