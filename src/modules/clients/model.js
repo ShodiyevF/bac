@@ -105,7 +105,7 @@ const clientPUTFullnameModel = async (user_id, { company_id, client_id, client_f
         }
 
     } catch (error) {
-        console.log(error.message, 'clientPUTModel')
+        console.log(error.message, 'clientPUTFullnameModel')
     }
 }
 
@@ -126,7 +126,7 @@ const clientPUTNumber1Model = async (user_id, { company_id, client_id, client_ph
         }
 
     } catch (error) {
-        console.log(error.message, 'clientPUTModel')
+        console.log(error.message, 'clientPUTNumber1Model')
     }
 }
 
@@ -147,7 +147,7 @@ const clientPUTNumber2Model = async (user_id, { company_id, client_id, client_ph
         }
 
     } catch (error) {
-        console.log(error.message, 'clientPUTModel')
+        console.log(error.message, 'clientPUTNumber2Model')
     }
 }
 
@@ -168,7 +168,7 @@ const clientPUTAboutModel = async (user_id, { company_id, client_id, client_abou
         }
 
     } catch (error) {
-        console.log(error.message, 'clientPUTModel')
+        console.log(error.message, 'clientPUTAboutModel')
     }
 }
 
@@ -189,7 +189,7 @@ const clientPUTAddressModel = async (user_id, { company_id, client_id, client_ad
         }
 
     } catch (error) {
-        console.log(error.message, 'clientPUTModel')
+        console.log(error.message, 'clientPUTAddressModel')
     }
 }
 
