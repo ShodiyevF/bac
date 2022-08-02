@@ -88,6 +88,29 @@ const clientDELETEModel = async(user_id, {company_id, client_id}) => {
     }
 }
 
+const clientPUTModel = async (user_id, { company_id, client_id, client_fullname, client_phone_number_first, client_phone_number_second, client_about, client_address, client_age }) => {
+    try {
+
+        const checkuser = await uniqRow('select * from users where user_id = $1 and company_id = $2', user_id.id, company_id)
+
+
+        if (checkuser.rows.length) {
+            const c = await uniqRow('select * from clients where company_id = $1 and client_id = $2', company_id, client_id)
+            if (c.rows.length) {
+                await uniqRow('update clients set client_fullname = $1, client_phone_number_first = $2, client_phone_number_second = $3, client_about = $4, client_address = $5, client_age = $6', client_fullname, client_phone_number_first, client_phone_number_second, client_about, client_address, client_age)
+                return 200
+            } else {
+                return 404
+            }
+        } else {
+            return 400
+        }
+
+    } catch (error) {
+        console.log(error.message, 'clientPUTModel')
+    }
+}
+
 const clientsMODEL = async () => {
     try {
         const query = `
@@ -108,5 +131,6 @@ module.exports = {
     clientsPOSTModel,
     clientsStatusPUTModel,
     clientDELETEModel,
-    clientsMODEL
+    clientsMODEL,
+    clientPUTModel
 }

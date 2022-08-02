@@ -39,12 +39,15 @@ const clientPOSTCtrl = async (req, res) => {
         const permission = await permissionCtrl(tokenchecker(req.body.token).id, 2, 1)
         
         if(permission){
-            const company_id = (req.body.company_id)
-            res.json({
-                status: 200,
-                message: 'data has sended',
-                data: await clientsPOSTModel(req.body, tokenchecker(req.body.token).id, company_id ? company_id : 0)
-            })
+            const { phone_number_first, phone_number_second } = req.body
+            if (phone_number_first || phone_number_first.length <= 9 || phone_number_second || phone_number_second.length <= 9) {
+                const company_id = (req.body.company_id)
+                res.json({
+                    status: 200,
+                    message: 'data has sended',
+                    data: await clientsPOSTModel(req.body, tokenchecker(req.body.token).id, company_id ? company_id : 0)
+                })
+            }
         } else {
             res.json({ 
                 status: 404,
@@ -112,6 +115,41 @@ const clientDELETECtrl = async (req, res) => {
         
     } catch (error) {
         console.log(error.message, 'clientDELETECtrl');
+    }
+}
+
+const clientPUTCtrl = async (req, res) => {
+    try {
+        const permission = await permissionCtrl(tokenchecker(req.body.token).id, 3, 1)
+
+        const clientDELETE = await clientDELETEModel(await tokenchecker(req.body.token), req.body)
+
+        if (permission) {
+            if (clientDELETE === 200) {
+                res.json({
+                    status: 200,
+                    message: 'user has deleted',
+                })
+            } else if (clientDELETE === 400) {
+                res.json({
+                    status: 404,
+                    message: 'company not found',
+                })
+            } else {
+                res.json({
+                    status: 404,
+                    message: 'user not found',
+                })
+            }
+        } else {
+            res.json({
+                status: 500,
+                message: `you do'nt have any permissions`
+            })
+        }
+
+    } catch (error) {
+        console.log(error.message, 'clientPUTCtrl');
     }
 }
 

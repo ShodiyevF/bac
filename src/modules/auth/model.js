@@ -3,6 +3,7 @@ const { uniqRow } = require('./../../lib/pg')
 const login = async ({ login, password }) => {
     try {
         const users = await uniqRow('select * from users where user_login = $1 and user_password = $2', login, password)
+        console.log(users.rows);
         if (users.rows.length) {
             return users.rows[0]
         } else {
