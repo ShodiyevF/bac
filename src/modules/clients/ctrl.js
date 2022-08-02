@@ -1,7 +1,7 @@
 const {checkcompany} = require("../../lib/checkcompany");
 const { permissionCtrl } = require("../../lib/permissions/ctrl");
 const { tokenchecker } = require('../../lib/tokenchecker');
-const { clientsGETModel, clientsPOSTModel, clientsStatusPUTModel, clientsMODEL,  clientDELETEModel } = require("./model")
+const { clientsGETModel, clientsPOSTModel, clientsStatusPUTModel, clientsMODEL,  clientDELETEModel, clientPUTModel } = require("./model")
 
 const clientGETCtrl = async (req, res) => {
     try {
@@ -122,15 +122,15 @@ const clientPUTCtrl = async (req, res) => {
     try {
         const permission = await permissionCtrl(tokenchecker(req.body.token).id, 5, 1)
 
-        const clientDELETE = await clientDELETEModel(await tokenchecker(req.body.token), req.body)
+        const clientPUT = await clientPUTModel(await tokenchecker(req.body.token), req.body)
 
         if (permission) {
-            if (clientDELETE === 200) {
+            if (clientPUT === 200) {
                 res.json({
                     status: 200,
-                    message: 'user has deleted',
+                    message: 'user has update'
                 })
-            } else if (clientDELETE === 400) {
+            } else if (clientPUT === 400) {
                 res.json({
                     status: 404,
                     message: 'company not found',
