@@ -87,9 +87,9 @@ const clientDELETECtrl = async (req, res) => {
     try {
         const permission = await permissionCtrl(tokenchecker(req.body.token).id, 3, 1)
         
-        const clientDELETE = await clientDELETEModel(await tokenchecker(req.body.token), req.body)
         
         if(permission){
+            const clientDELETE = await clientDELETEModel(await tokenchecker(req.body.token), req.body)
             if (clientDELETE === 200) {
                 res.json({
                     status: 200,
@@ -122,24 +122,27 @@ const clientPUTCtrl = async (req, res) => {
     try {
         const permission = await permissionCtrl(tokenchecker(req.body.token).id, 5, 1)
 
-        const clientPUT = await clientPUTModel(await tokenchecker(req.body.token), req.body)
-
+        
         if (permission) {
-            if (clientPUT === 200) {
-                res.json({
-                    status: 200,
-                    message: 'user has update'
-                })
-            } else if (clientPUT === 400) {
-                res.json({
-                    status: 404,
-                    message: 'company not found',
-                })
-            } else {
-                res.json({
-                    status: 404,
-                    message: 'user not found',
-                })
+            if (permission) {
+                
+                const clientPUT = await clientPUTModel(await tokenchecker(req.body.token), req.body)
+                if (clientPUT === 200) {
+                    res.json({
+                        status: 200,
+                        message: 'user has update'
+                    })
+                } else if (clientPUT === 400) {
+                    res.json({
+                        status: 404,
+                        message: 'company not found',
+                    })
+                } else {
+                    res.json({
+                        status: 404,
+                        message: 'user not found',
+                    })
+                }
             }
         } else {
             res.json({
@@ -169,5 +172,6 @@ module.exports = {
     clientPOSTCtrl,
     clientStatusPUTCtrl,
     clientDELETECtrl,
-    clientCTRL
+    clientCTRL,
+    clientPUTCtrl
 }
