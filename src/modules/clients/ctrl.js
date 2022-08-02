@@ -120,7 +120,7 @@ const clientDELETECtrl = async (req, res) => {
 
 const clientPUTCtrl = async (req, res) => {
     try {
-        const permission = await permissionCtrl(tokenchecker(req.body.token).id, 3, 1)
+        const permission = await permissionCtrl(tokenchecker(req.body.token).id, 5, 1)
 
         const clientDELETE = await clientDELETEModel(await tokenchecker(req.body.token), req.body)
 

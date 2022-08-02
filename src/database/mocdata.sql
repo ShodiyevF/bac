@@ -15,7 +15,8 @@ insert into permissions_names(permissions_name) values
 ('read'),
 ('write'),
 ('delete'),
-('put');
+('put'),
+('putclient');
 
 insert into actions(action_name) values
 ('foydalanuvchilar'),
