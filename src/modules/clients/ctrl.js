@@ -1,7 +1,7 @@
 const {checkcompany} = require("../../lib/checkcompany");
 const { permissionCtrl } = require("../../lib/permissions/ctrl");
 const { tokenchecker } = require('../../lib/tokenchecker');
-const { clientsGETModel, clientsPOSTModel, clientsStatusPUTModel, clientsMODEL,  clientDELETEModel, clientPUTModel } = require("./model")
+const { clientsGETModel, clientsPOSTModel, clientsStatusPUTModel, clientsMODEL,  clientDELETEModel, clientPUTModel, clientPUTFullnameModel } = require("./model")
 
 const clientGETCtrl = async (req, res) => {
     try {
@@ -118,31 +118,28 @@ const clientDELETECtrl = async (req, res) => {
     }
 }
 
-const clientPUTCtrl = async (req, res) => {
+const clientPUTFullnameCtrl = async (req, res) => {
     try {
         const permission = await permissionCtrl(tokenchecker(req.body.token).id, 5, 1)
-
+        
         
         if (permission) {
-            if (permission) {
-                
-                const clientPUT = await clientPUTModel(await tokenchecker(req.body.token), req.body)
-                if (clientPUT === 200) {
-                    res.json({
-                        status: 200,
-                        message: 'user has update'
-                    })
-                } else if (clientPUT === 400) {
-                    res.json({
-                        status: 404,
-                        message: 'company not found',
-                    })
-                } else {
-                    res.json({
-                        status: 404,
-                        message: 'user not found',
-                    })
-                }
+            const clientPUT = await clientPUTFullnameModel(await tokenchecker(req.body.token), req.body)
+            if (clientPUT == 200) {
+                res.json({
+                    status: 200,
+                    message: 'user has update'
+                })
+            } else if (clientPUT == 400) {
+                res.json({
+                    status: 404,
+                    message: 'company not found',
+                })
+            } else {
+                res.json({
+                    status: 404,
+                    message: 'user not found',
+                })
             }
         } else {
             res.json({
@@ -150,19 +147,9 @@ const clientPUTCtrl = async (req, res) => {
                 message: `you do'nt have any permissions`
             })
         }
-
+        
     } catch (error) {
         console.log(error.message, 'clientPUTCtrl');
-    }
-}
-
-const clientCTRL = async (req, res) => {
-    try {
-        res.json({
-            data: (await clientsMODEL()).rows
-        })
-    } catch (error) {
-        console.log(error);
     }
 }
 
@@ -172,6 +159,5 @@ module.exports = {
     clientPOSTCtrl,
     clientStatusPUTCtrl,
     clientDELETECtrl,
-    clientCTRL,
-    clientPUTCtrl
+    clientPUTFullnameCtrl
 }

@@ -30,6 +30,7 @@ insert into permissions_access(permissions_names_id, user_id, action_id) values 
 insert into permissions_access(permissions_names_id, user_id, action_id) values (2,1,1);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (3,1,1);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (4,1,1);
+insert into permissions_access(permissions_names_id, user_id, action_id) values (5,1,1);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (1,1,2);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (2,1,2);
 insert into permissions_access(permissions_names_id, user_id, action_id) values (3,1,2);
